@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductStoreRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -24,7 +27,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $product = New Product();
+        return view('products.create', compact('product'));
     }
 
     /**
@@ -33,9 +37,19 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
-        //
+        $data = $request->all();
+
+        if ($request->has('image')) {
+            $image_path = $request->file('image')->store('medias');
+            $data['featured_image_url'] = $image_path;
+        }
+        Product::create($data);
+
+        return redirect()->route('products.index')->with(['status' => 'Success', 'color' => 'green', 'message' => 'Producto creado exitosamente']);
+
+
     }
 
     /**
@@ -57,7 +71,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+    
+        return view('products.create', compact('product'));
     }
 
     /**
@@ -69,7 +84,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $data = $request->all();
+
+        if ($request->has('image')) {
+            Storage::delete($product->featured_image_url);
+            $image_path = $request->file('image')->store('medias');
+            $data['featured_image_url'] = $image_path;
+        }
+
+        $product->fill($data);
+        $product->save();
+
+        return redirect()->route('products.index')->with(['status' => 'Success', 'color' => 'blue', 'message' => 'Producto actualizado exitosamente']);
     }
 
     /**
