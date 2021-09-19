@@ -106,6 +106,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+            $result = ['status' => 'succes', 'color' => 'green', 'message' => 'Producto eliminado exitosamente'];           
+        } catch (\Exception $e) {
+            $result = ['status' => 'succes', 'color' => 'red', 'message' => 'El producto no puede ser eliminado (Restricción en cascada)'];
+        }
+        
+        return redirect()->route('products.index')->with($result);
     }
 }
