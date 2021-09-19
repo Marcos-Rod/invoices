@@ -18,6 +18,10 @@
                     <x-jet-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
                         Products
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('buyers.index') }}" :active="request()->routeIs('buyers.*')">
+                        Buyers
+                    </x-jet-nav-link>
+                    
                 </div>
             </div>
 
@@ -167,8 +171,11 @@
                     {{ __('Profile') }}
                 </x-jet-responsive-nav-link>
                 <x-jet-responsive-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
-                        Products
-                    </x-jet-responsive-nav-link>
+                     Products
+                </x-jet-responsive-nav-link>
+                <x-jet-responsive-nav-link href="{{ route('buyers.index') }}" :active="request()->routeIs('buyers.*')">
+                    Buyers
+                </x-jet-responsive-nav-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                     <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">

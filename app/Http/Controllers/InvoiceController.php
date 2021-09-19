@@ -14,7 +14,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $invoices = Invoice::with('buyer')->paginate(3);
+        return view('invocices.index', compact('invocices'));
     }
 
     /**
@@ -24,7 +25,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
